@@ -1,7 +1,6 @@
 #include <iostream>
 using namespace std;
 
-
 int main()
 {
 	int key;
@@ -10,7 +9,6 @@ int main()
 
 	cout << "key = " << key << endl;
 
-	system("pause");
 	return 0;
 }
 
