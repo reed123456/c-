@@ -3,6 +3,28 @@
 #include <vector>
 using namespace std;
 
+
+class Solution {
+	public:
+		string reverseWords(string s) {
+			string target = " ";
+			auto begin = s.begin();
+			int pre_pos = 0;
+			int pos = 0;
+			while ((pos = s.find_first_of(target, pos)) != string::npos)
+			{
+				reverse(begin+pre_pos, begin+pos);
+				pre_pos = ++pos;
+			}
+
+			reverse(begin+pre_pos, s.end());
+
+			return s;
+		}
+};
+}
+
+/*
 class Solution {
 public:
 	bool isLetterOrNumber(char ch)
