@@ -2,7 +2,30 @@
 #include <string>
 using namespace std;
 
+int main()
+{
 
+	string name("Alice");
+	string pres, veep, source, join;
+	pres = name;
+	veep = "hello summer.";
+	source = 'X';
+	join = name + source;
+
+	string str1, str2;
+	getline(cin, str1);     //read to end-of-line
+	getline(cin, str2, '.');//read to peraid
+	string who;
+	cin >> who;
+
+	string claim("The string class has many feature.");
+	cout << claim << endl;
+	string s1; // 构造空的string类对象s1
+	string s2("hello bit"); // 用C格式字符串构造string类对象s2
+	string s3(s2); // 拷贝构造s3
+}
+
+/*
 string multiply(string num1, string num2) {
 	string str = string(num1.size() + num2.size(), '0');
 	reverse(num1.begin(), num1.end());
