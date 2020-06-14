@@ -5,6 +5,61 @@ using namespace std;
 
 int main()
 {
+	vector<int> nums{ 1, 1, 2 };
+	auto it = nums.begin();
+	vector<int>::iterator pre_it = it;
+
+	while (it != nums.end())
+	{
+		if (pre_it == it)
+		{
+			pre_it = it;
+			++it;
+		}
+		else if (*pre_it == *it)
+			it = it.
+	}
+
+	system("pause");
+	return 0;
+}
+
+/*
+int main()
+{
+	vector<int> nums{1,2,1,3,2,5};
+	//int flag = 0;
+	int k = 0;
+	int a;
+	int b;
+	int c;
+	vector<int> ar(2);
+	for (int i = 0; i < nums.size(); ++i)
+	{
+		int flag = 0;
+		for (int j = 0; j < nums.size(); ++j)
+		{
+			if ((a = nums[i]) == (b = nums[j]) && i != j)
+			{
+				flag = 1;
+				break;
+			}
+		}
+		if (flag == 0)
+		{
+			c = nums[i];
+			ar[k++] = c;
+		}
+		if (k == 2)
+			break;
+	}
+
+	system("pause");
+	return 0;
+}
+/*
+int main()
+{
 	string digits = { "5678" };
 	//digits.empty();
 	string alph[][4] = { "a", "b", "c", "",//2
