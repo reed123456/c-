@@ -1,9 +1,34 @@
 #include <iostream>
 #include <vector>
 #include <list>
+#include <stack>
 using namespace std;
 
+void main()
+{
+	stack<char> S;
+	char x, y;
+	x = 'n'; 
+	y = 'g';
+	S.push(x); 
+	S.push('i'); 
+	S.push(y);
+	S.pop(); 
+	S.push('r'); 
+	S.push('t'); 
+	S.push(x);
+	S.pop(); 
+	S.push('s');
 
+	while (!S.empty())
+	{
+		x = S.top();
+		S.pop();
+		cout << x;
+	}
+	cout << y;
+	system("pause");
+}
 /*
 
 int main()
@@ -55,13 +80,13 @@ int main()
 	// v.push_back(8);
 	// 给vector重新赋值，可能会引起底层容量改变
 	v.assign(100, 8);
-	/*
+	
 	出错原因：以上操作，都有可能会导致vector扩容，也就是说vector底层原理旧空间被释放掉，
 	而在打印时，it还使用的是释放之间的旧空间，在对it迭代器操作时，实际操作的是一块已经被释放的
 	空间，而引起代码运行时崩溃。
 	解决方式：在以上操作完成之后，如果想要继续通过迭代器操作vector中的元素，只需给it重新
 	赋值即可。
-	*/
+	
 	while (it != v.end())
 	{
 		cout << *it << " ";
