@@ -3,6 +3,21 @@
 #include <vector>
 using namespace std;
 
+int main(void)
+{
+
+	int a = 10; 
+	double b = 3.14; 
+	cout << 'A' + b + a << endl;
+	int year = 2019;
+	int *p = &year;
+	*p += 1;
+	cout << year << endl;
+	//printf("%s , %6.3s\n", "computer", "computer");
+	system("pause");
+	return 0;
+}
+/*
 int main()
 {
 	//string str = "abcqwerabc";
