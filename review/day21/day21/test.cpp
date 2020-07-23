@@ -1,10 +1,160 @@
-#include <stdio.h>
-#include <string.h>
+#include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
 
+bool fun(int n){
+	int sum = 0;
+	for (int i = 1; n>sum; i = i + 2)
+		sum = sum + i;
+	return (n == sum);
+}
+
+int main()
+{
+	cout << fun(484) << endl;
+	system("pause");
+	return 0;
+}
+
+/*
+int main()
+{
+	string str, sRet;
+	str = "3 3 1 1 2 3 4 5 6 3 2 1 2 3 4 5 6 2 2 1 1 1 1";
+						"1 4 2 5 3 6 1 5 4 3 2 6 1 1 1 1";
+	//getline(cin, str);
+	for (int i = str.size() - 1, j = i / 2; j > 0; i -= 2, j -= 2)
+	{
+		sRet += str[i];
+		sRet += str[j];
+	}
+	cout << str << endl;
+	cout << sRet << endl;
+	system("pause");
+	return 0;
+}
+
+/*
+vector<int> show(int n, string str)
+{
+	int top, end, cur;
+	vector<int> a;
+	a.resize(5);
+	if (n <= 4)
+	{
+		for (int i = 0; i < n; ++i)
+			a[i] = i + 1;
+		cur = 1;
+		for (int j = 0; j < str.size(); ++j)
+		{
+			if (str[j] = 'U')
+			{
+				if ((cur--) == 0)
+					cur = n;
+			}
+			else
+			{
+				if ((cur++) == n)
+					cur = 1;
+			}
+		}
+		a[4] = cur;
+		return a;
+	}
+	
+	cur = top = 1;
+	end = 4;
+	for (int i = 0; i < str.size(); i++)
+	{
+		if (str[i] == 'U')
+		{
+			if (cur == top)
+			{
+				if (top != 1)
+				{
+					cur--;
+					top--;
+					end--;
+				}
+				else
+				{
+					cur = end = n;
+					top = n - 3;
+				}
+			}
+			else
+			{
+				cur--;
+			}
+		}
+		else if (str[i] == 'D')
+		{
+			if (cur == end)
+			{
+				if (end != n)
+				{
+					cur++;
+					top++;
+					end++;
+				}
+				else
+				{
+					cur = top = 1;
+					end = top + 3;
+				}
+			}
+			else
+			{
+				cur++;
+			}
+		}
+	}
+	for (int i = 0; i < 4; i++)
+		a[i] = top + i;
+	a[4] = cur;
+	return a;
+}
+
+int main()
+{
+	int n;
+	string str;
+	n = 10;
+	str = "UUUU";
+	//cin >> n >> str;
+	vector<int> vRet = show(n, str);
+	for (int i = 0; i < 4; i++)
+	{
+		if (vRet[i] == 0)
+			break;
+		if (i != 0)
+			cout << " ";
+		cout << vRet[i];
+	}
+	cout << endl << vRet[4] << endl;
+	system("pause");
+	return 0;
+}
+/*
+int main()
+{
+	string str, sRet;
+	str = "3 3 1 1 2 3 4 5 6 3 2 1 2 3 4 5 6 2 2 1 1 1 1";
+	//getline(cin, str);
+	for (int i = str.size() - 1, j = i / 2; j > 0; i -= 2, j -= 2)
+	{
+		sRet += str[i];
+		sRet += str[j];
+	}
+	cout << str << endl;
+	cout << sRet << endl;
+	system("pause");
+	return 0;
+}
 
 
+/*
 char * fun()
 {
 	char p[] = "safs";
