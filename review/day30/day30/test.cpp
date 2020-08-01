@@ -1,6 +1,34 @@
 #include <iostream>
 using namespace std;
 
+
+
+string multiply(string num1, string num2) {
+	string str = string(num1.size() + num2.size(), '0');
+	reverse(num1.begin(), num1.end());
+	reverse(num2.begin(), num2.end());
+	for (int i = 0, k = 0; i < num2.size(); ++i, k = i)
+	{
+		int sum = 0;
+		int sign = 0;
+		for (int j = 0; j < num1.size(); ++j, ++k)
+		{
+			sum = str[k] - '0' + (num2[i] - '0') * (num1[j] - '0') + sign;
+			str[k] = (sum % 10) + '0';
+			sign = sum / 10;
+		}
+
+		str[k] = sign + '0';
+	}
+	while (str.size() > 1 && str[str.size() - 1] == '0')
+	{
+		str.resize(str.size() - 1);
+	}
+	reverse(str.begin(), str.end());
+	return str;
+}
+
+/*
 int main() {
 	int n = 0;
 	//scanf返回值为正确输入数据的变量个数，当一个变量都没有成功获取数据时，此时返回-1
