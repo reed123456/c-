@@ -3,6 +3,24 @@
 #include <vector>
 using namespace std;
 
+void oddInOddEvenInEven(vector<int>& arr, int len) {
+	int i = 0, j = 1;
+	while (i<len&&j<len)
+	{
+		if (arr[len - 1] % 2 == 0)
+		{
+			swap(arr[len - 1], arr[i]);
+			i += 2;
+		}
+		else
+		{
+			swap(arr[len - 1], arr[j]);
+			j += 2;
+		}
+	}
+}
+
+/*
 void BigInt::Add(BigInt &bt, const BigInt &bt1, const BigInt &bt2)
 {
 	int i, flag = 0;

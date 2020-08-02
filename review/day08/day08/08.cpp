@@ -1,3 +1,71 @@
+#include<iostream>
+using namespace std;
+int pathNum(int n, int m)
+{
+	if (n > 1 && m > 1)
+		//b情况，递归
+		return pathNum(n - 1, m) + pathNum(n, m - 1);
+	else if (((n >= 1) && (m == 1)) || ((n == 1) && (m >= 1)))
+		// a情况，终止条件
+		return n + m;
+	else
+		//格子为0时， 路径为0
+		return 0;
+}
+int main()
+{
+	int n, m;
+	while (cin >> n >> m)
+	{
+		cout << pathNum(n, m) << endl;
+	}
+	return 0;
+}
+
+/*
+#include<iostream>
+#include<vector>
+#include<string>
+using namespace std;
+int main()
+{
+	int n;
+	cin >> n;
+	vector<string> v;
+	v.resize(n);
+	for (auto& str : v)
+		cin >> str;
+	bool lenSym = true, lexSym = true;
+	// 这里要注意从i=1开始遍历，前后比较，比较长度
+	for (size_t i = 1; i < v.size(); ++i)
+	{
+		if (v[i - 1].size() >= v[i].size())
+		{
+			lenSym = false;
+			break;
+		}
+	}
+	//比较ASCII码
+	for (size_t i = 1; i < v.size(); ++i)
+	{
+		if (v[i - 1] >= v[i])
+		{
+			lexSym = false;
+			break;
+		}
+	}
+	if (lenSym&& lexSym)
+		cout << "both" << endl;
+	else if (!lenSym && lexSym)
+		cout << "lexicographically" << endl;
+	else if (lenSym && !lexSym)
+		cout << "lengths" << endl;
+	else if (!lenSym&&!lexSym)
+		cout << "none" << endl;
+	return 0;
+}
+
+/*
 #include <iostream>
 #include<string>
 #include<algorithm>

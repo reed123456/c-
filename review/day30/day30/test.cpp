@@ -65,11 +65,9 @@ int main()
 	while (cin >> n && n != 0)
 	{
 		int count = 0;
-		int sum = 1;
-		while (sum < n)
-		{
-			count++;
-			sum *= 3;
+		while (n > 1) {
+			count += 1;
+			n = n / 3 + (n % 3 > 0);
 		}
 		a.push_back(count);
 	}
