@@ -212,15 +212,17 @@ void BigInt::Mul(BigInt &bt, const BigInt &bt1, const BigInt &bt2)
 {
 	vector<BigInt> a;
 	a.resize(10);
+	for (auto &e : a)
+		e.clear();
 	for (u_long i = 1; i <= bt2.size(); ++i)
 	{
 		if (a[bt2[i]].size() == 0)
 			MulItem(a[bt2[i]], bt1, bt2[i]);
 		MoveAdd(bt, a[bt2[i]], i);
-	}
-	for (auto &e : a)
-		e.clear();
+	}	
 }
+
+
 
 //void BigInt::Mul(BigInt &bt, const BigInt &bt1, const BigInt &bt2)
 //{
@@ -278,24 +280,26 @@ void BigInt::Mul(BigInt &bt, const BigInt &bt1, const BigInt &bt2)
 //}
 //-------------------------------------------------------------------------------
 
-void BigInt::Div(BigInt &bt, const BigInt &bt1, const BigInt &bt2)
-{
-	bt.clear();
-	if (bt1 < bt2)
-		bt = 0;
-	else if (bt1 == bt2)
-		bt = 1;
-	else
-	{
-		BigInt tmp = bt1;
-		while (tmp >= bt2)
-		{
-			++bt;
-			tmp -= bt2;
-			clear_head_zero(tmp);
-		}
-	}
-}
+
+
+//void BigInt::Div(BigInt &bt, const BigInt &bt1, const BigInt &bt2)
+//{
+//	bt.clear();
+//	if (bt1 < bt2)
+//		bt = 0;
+//	else if (bt1 == bt2)
+//		bt = 1;
+//	else
+//	{
+//		BigInt tmp = bt1;
+//		while (tmp >= bt2)
+//		{
+//			++bt;
+//			tmp -= bt2;
+//			clear_head_zero(tmp);
+//		}
+//	}
+//}
 
 ///////////////////////////////////////////////////////////////////////////////
 BigInt& BigInt::operator++()
