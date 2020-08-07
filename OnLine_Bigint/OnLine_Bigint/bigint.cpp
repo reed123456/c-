@@ -25,9 +25,16 @@ void BigInt::LoadData(int sz)
 	srand(time(0));
 	for (int i = 0; i<sz; ++i)
 	{
-		push_back(rand() % 10);
+		u_char val = rand() % 10;
+		while (i == sz - 1 && val == 0)   //解决头部出现0的情况
+		{
+			val = rand() % 10;
+		}
+		push_back(val);
 	}
+	clear_head_zero(*this);
 }
+
 void BigInt::ShowData()const
 {
 	for (size_t i = size(); i>0; --i)
@@ -43,6 +50,10 @@ u_char BigInt::back()const
 void BigInt::push_back(u_char x)
 {
 	big.push_back(x);
+}
+void BigInt::push_front(u_char x)
+{
+	big.push_front(x);
 }
 void BigInt::pop_back()
 {
@@ -96,6 +107,7 @@ u_char BigInt::AddItem(u_char a, u_char b, u_char &sign)
 
 void BigInt::Add(BigInt &bt, const BigInt &bt1, const BigInt &bt2)
 {
+	bt.clear();
 	u_long i, j;
 	i = j = 1;
 	u_char sum = 0, sign = 0;
@@ -210,96 +222,143 @@ void BigInt::MoveAdd(BigInt &bt, const BigInt &bt1, u_long offset)
 
 void BigInt::Mul(BigInt &bt, const BigInt &bt1, const BigInt &bt2)
 {
-	vector<BigInt> a;
-	a.resize(10);
-	for (auto &e : a)
-		e.clear();
+	if (bt1 == 0 || bt2 == 0)
+	{
+		bt = 0;
+		return;
+	}
+
+	BigInt res_table[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
 	for (u_long i = 1; i <= bt2.size(); ++i)
 	{
-		if (a[bt2[i]].size() == 0)
-			MulItem(a[bt2[i]], bt1, bt2[i]);
-		MoveAdd(bt, a[bt2[i]], i);
-	}	
+		if (bt2[i] != 0 && res_table[bt2[i]] == 0)
+		{
+			res_table[bt2[i]].clear();
+			MulItem(res_table[bt2[i]], bt1, bt2[i]);
+		}
+		MoveAdd(bt, res_table[bt2[i]], i);
+	}
 }
 
+/*
+void BigInt::Mul(BigInt &bt, const BigInt &bt1, const BigInt &bt2)
+{
+BigInt tmp;
+tmp.clear();
+for(u_long i=1; i<=bt2.size(); ++i)
+{
+MulItem(tmp, bt1, bt2[i]);
+MoveAdd(bt, tmp, i);
+tmp.clear();
+}
+}
+void BigInt::Mul(BigInt &bt, const BigInt &bt1, const BigInt &bt2)
+{
+//先制作结果表
+BigInt res_table[10];
+for(u_char i=1; i<=9; ++i)
+{
+res_table[i].clear();
+MulItem(res_table[i], bt1, i);
+}
+for(u_long i=1; i<=bt2.size(); ++i)
+MoveAdd(bt, res_table[bt2[i]], i);
+}
+*/
 
+void BigInt::Div(BigInt &bt, const BigInt &bt1, const BigInt &bt2)
+{
+	bt.clear();
+	if (bt1 < bt2)
+		bt = 0;
+	else if (bt1 == bt2)
+		bt = 1;
+	else
+	{
 
-//void BigInt::Mul(BigInt &bt, const BigInt &bt1, const BigInt &bt2)
-//{
-//	BigInt tmp;
-//	tmp.clear();
-//	for (u_long i = 1; i <= bt2.size(); ++i)
-//	{
-//		MulItem(tmp, bt1, bt2[i]);
-//		MoveAdd(bt, tmp, i);
-//		tmp.clear();
-//	}
-//}
-//--------------------------------------------------------------------------
-//void BigInt::MoveSub(BigInt &bt, const BigInt &bt1, u_long offset)
-//{
-//	u_long i, j;
-//	i = offset;
-//	j = 1;
-//	u_char sign = 0;
-//	while (i <= bt1.size() && j <= bt.size())
-//	{
-//		bt[i] = SubItem(bt1[i], bt1[j], sign);
-//		i++;
-//		j++;
-//	}
-//	if (i <= bt1.size())
-//		bt[i] = 0;
-//	while (bt[i] == 0)
-//	{
-//		bt.pop_back();
-//		i--;
-//	}
-//}
-//
-//
-//void BigInt::Div(BigInt &bt, const BigInt &bt1, const BigInt &bt2)
-//{
-//	bt.clear();
-//	if (bt1 < bt2)
-//		bt = 0;
-//	else if (bt1 == bt2)
-//		bt = 1;
-//	else
-//	{
-//		vector<BigInt> a;
-//		a.resize(10);
-//		for (auto &e : a)
-//			e.clear();
-//		for (u_long i = 1; i < 10; ++i)
-//		{
-//			MulItem(a[i], bt1, bt2[i]);
-//		}
-//		
-//	}
-//}
-//-------------------------------------------------------------------------------
+		u_long bt1_len = bt1.size();
+		u_long bt2_len = bt2.size();
+		int k = bt1_len - bt2_len;
 
+		BigInt tmp;
+		tmp.clear();
+		for (u_long i = 1; i <= bt2.size(); ++i)
+			tmp.push_back(bt1[i + k]);
 
+		while (k >= 0)
+		{
+			u_char div = 0;
+			while (tmp >= bt2)
+			{
+				tmp -= bt2;
+				div++;
+				clear_head_zero(tmp);
+			}
+			bt.push_front(div);   // 6 0
+			if (k > 0)
+			{
+				tmp.push_front(bt1[k]);
+				clear_head_zero(tmp);
+			}
+			--k;
+		}
+		clear_head_zero(bt);
+	}
+}
 
-//void BigInt::Div(BigInt &bt, const BigInt &bt1, const BigInt &bt2)
-//{
-//	bt.clear();
-//	if (bt1 < bt2)
-//		bt = 0;
-//	else if (bt1 == bt2)
-//		bt = 1;
-//	else
-//	{
-//		BigInt tmp = bt1;
-//		while (tmp >= bt2)
-//		{
-//			++bt;
-//			tmp -= bt2;
-//			clear_head_zero(tmp);
-//		}
-//	}
-//}
+void BigInt::Mod(BigInt &bt, const BigInt &bt1, const BigInt &bt2)
+{
+	bt.clear();
+	if (bt1 < bt2)
+		bt = bt1;
+	else if (bt1 == bt2)
+		bt = 0;
+	else
+	{
+
+		u_long bt1_len = bt1.size();
+		u_long bt2_len = bt2.size();
+		int k = bt1_len - bt2_len;
+
+		BigInt tmp;
+		tmp.clear();
+		for (u_long i = 1; i <= bt2.size(); ++i)
+			tmp.push_back(bt1[i + k]);
+
+		while (k >= 0)
+		{
+			while (tmp >= bt2)
+			{
+				tmp -= bt2;
+				clear_head_zero(tmp);
+			}
+			if (k > 0)
+			{
+				tmp.push_front(bt1[k]);
+				clear_head_zero(tmp);
+			}
+			--k;
+		}
+
+		bt = tmp;
+
+		clear_head_zero(bt);
+	}
+}
+
+void BigInt::Square(BigInt &bt, const BigInt &bt1)
+{
+	BigInt::Mul(bt, bt1, bt1);
+}
+
+//幂的快速求解法
+void BigInt::Pow(BigInt &bt, const BigInt &bt1, const BigInt &bt2) //2^3 = 2*2*2
+{
+	bt = 1;
+	for (BigInt i = 0; i<bt2; ++i)
+		bt *= bt1;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 BigInt& BigInt::operator++()
@@ -320,6 +379,25 @@ BigInt  BigInt::operator++(int)
 {
 	BigInt tmp = *this;
 	++*this;
+	return tmp;
+}
+
+BigInt& BigInt::operator--()
+{
+	u_long i = 1;
+	u_char sign = 1;
+	while (sign>0 && i <= size())
+	{
+		(*this)[i] = SubItem((*this)[i], 0, sign);
+		i++;
+	}
+	clear_head_zero(*this);
+	return *this;
+}
+BigInt  BigInt::operator--(int)
+{
+	BigInt tmp = *this;
+	--*this;
 	return tmp;
 }
 
@@ -370,6 +448,59 @@ BigInt& BigInt::operator-=(const BigInt &bt)
 	return *this;
 }
 
+BigInt& BigInt::operator*=(const BigInt &bt)
+{
+	BigInt tmp;
+	BigInt::Mul(tmp, *this, bt);
+	*this = tmp;
+	return *this;
+}
+BigInt& BigInt::operator/=(const BigInt &bt)
+{
+	BigInt tmp;
+	BigInt::Div(tmp, *this, bt);
+	*this = tmp;
+	return *this;
+}
+BigInt& BigInt::operator%=(const BigInt &bt)
+{
+	BigInt tmp;
+	BigInt::Mod(tmp, *this, bt);
+	*this = tmp;
+	return *this;
+}
+
+BigInt BigInt::operator+(const BigInt &bt)
+{
+	BigInt tmp;
+	BigInt::Add(tmp, *this, bt);
+	return tmp;
+}
+BigInt BigInt::operator-(const BigInt &bt)
+{
+	BigInt tmp;
+	BigInt::Sub(tmp, *this, bt);
+	return tmp;
+}
+BigInt BigInt::operator*(const BigInt &bt)
+{
+	BigInt tmp;
+	BigInt::Mul(tmp, *this, bt);
+	return tmp;
+}
+BigInt BigInt::operator/(const BigInt &bt)
+{
+	BigInt tmp;
+	BigInt::Div(tmp, *this, bt);
+	return tmp;
+}
+BigInt BigInt::operator%(const BigInt &bt)
+{
+	BigInt tmp;
+	BigInt::Mod(tmp, *this, bt);
+	return tmp;
+}
+
 //////////////////////////////////////////////////////////////////////////////
 bool BigInt::operator<(const BigInt &bt)const
 {
@@ -391,6 +522,27 @@ bool BigInt::operator<(const BigInt &bt)const
 bool BigInt::operator>=(const BigInt &bt)const
 {
 	return !(*this < bt);
+}
+
+bool BigInt::operator>(const BigInt &bt)const
+{
+	if (size() > bt.size())
+		return true;
+	else if (size() < bt.size())
+		return false;
+
+	for (u_long i = bt.size(); i >= 1; --i)
+	{
+		if ((*this)[i] > bt[i])
+			return true;
+		else if (big[i] < bt[i])
+			return false;
+	}
+	return false;
+}
+bool BigInt::operator<=(const BigInt &bt)const
+{
+	return !(*this > bt);
 }
 
 bool BigInt::operator==(const BigInt &bt)const
